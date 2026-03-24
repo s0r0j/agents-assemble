@@ -2,26 +2,27 @@ import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
-    <div className="p-10 text-center">
-      <h1 className="text-3xl font-bold mb-6">
-        AI Mental Health Platform
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-4">
+      
+      <h1 className="text-4xl font-bold mb-4 text-center">
+        AI Mental Health Assistant
       </h1>
 
-      <p className="mb-8 text-gray-600">
-        Chat with AI or take a quick mental health quiz
+      <p className="text-gray-600 mb-8 text-center max-w-md">
+        Talk to an AI for guidance and take quizzes to understand your mental health better.
       </p>
 
-      <div className="flex justify-center gap-4">
+      <div className="flex gap-4">
         <Link
           to="/chat"
-          className="bg-blue-500 text-white px-6 py-3 rounded-lg"
+          className="bg-blue-500 text-white px-6 py-3 rounded-xl shadow hover:scale-105 transition"
         >
-          Go to Chat
+          Start Chat
         </Link>
 
         <Link
           to="/quiz"
-          className="bg-green-500 text-white px-6 py-3 rounded-lg"
+          className="bg-green-500 text-white px-6 py-3 rounded-xl shadow hover:scale-105 transition"
         >
           Take Quiz
         </Link>

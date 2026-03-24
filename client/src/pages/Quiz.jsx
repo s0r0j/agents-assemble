@@ -3,11 +3,11 @@ import { useState } from "react";
 export default function Quiz() {
   const questions = [
     {
-      q: "Do you often feel stressed?",
+      q: "Do you feel stressed often?",
       options: ["Yes", "No"],
     },
     {
-      q: "Do you sleep well?",
+      q: "Do you get enough sleep?",
       options: ["Yes", "No"],
     },
   ];
@@ -15,32 +15,38 @@ export default function Quiz() {
   const [answers, setAnswers] = useState({});
 
   return (
-    <div className="p-5 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Quiz</h1>
+    <div className="min-h-screen bg-gray-100 p-5">
+      <h1 className="text-2xl font-bold mb-6 text-center">
+        Mental Health Quiz
+      </h1>
 
-      {questions.map((item, i) => (
-        <div key={i} className="mb-4 bg-white p-4 rounded-lg shadow">
-          <p className="mb-2">{item.q}</p>
+      <div className="max-w-xl mx-auto space-y-4">
+        {questions.map((item, i) => (
+          <div
+            key={i}
+            className="bg-white p-5 rounded-xl shadow"
+          >
+            <p className="mb-3 font-medium">{item.q}</p>
 
-          <div className="flex gap-2">
-            {item.options.map((opt) => (
-              <button
-                key={opt}
-                onClick={() =>
-                  setAnswers({ ...answers, [i]: opt })
-                }
-                className="border px-3 py-1 rounded"
-              >
-                {opt}
-              </button>
-            ))}
+            <div className="flex gap-3">
+              {item.options.map((opt) => (
+                <button
+                  key={opt}
+                  onClick={() =>
+                    setAnswers({ ...answers, [i]: opt })
+                  }
+                  className={`px-4 py-2 rounded-lg border ${
+                    answers[i] === opt
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-100"
+                  }`}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
-
-      <div className="mt-4">
-        <b>Your Answers:</b>
-        <pre>{JSON.stringify(answers, null, 2)}</pre>
+        ))}
       </div>
     </div>
   );
