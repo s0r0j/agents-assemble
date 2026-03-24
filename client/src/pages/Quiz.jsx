@@ -3,50 +3,89 @@ import { useState } from "react";
 export default function Quiz() {
   const questions = [
     {
-      q: "Do you feel stressed often?",
-      options: ["Yes", "No"],
+      q: "How often do you feel stressed?",
+      options: ["Rarely", "Sometimes", "Often"],
     },
     {
       q: "Do you get enough sleep?",
-      options: ["Yes", "No"],
+      options: ["Yes", "Sometimes", "No"],
     },
   ];
 
-  const [answers, setAnswers] = useState({});
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState([]);
+
+  const handleAnswer = (option) => {
+    const newAnswers = [...answers, option];
+    setAnswers(newAnswers);
+
+    setStep((prev) => prev + 1);
+  };
+
+  // RESULT LOGIC
+  const getResult = () => {
+    const score = answers.filter(
+      (a) => a === "Often" || a === "No"
+    ).length;
+
+    if (score >= 1) {
+      return "You might be experiencing some stress. Try chatting with AI for guidance.";
+    } else {
+      return "You're doing well. Keep maintaining your mental health!";
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-5">
-      <h1 className="text-2xl font-bold mb-6 text-center">
-        Mental Health Quiz
-      </h1>
+    <div className="max-w-3xl mx-auto w-full mt-10 px-4 text-white">
 
-      <div className="max-w-xl mx-auto space-y-4">
-        {questions.map((item, i) => (
-          <div
-            key={i}
-            className="bg-white p-5 rounded-xl shadow"
-          >
-            <p className="mb-3 font-medium">{item.q}</p>
+      <div className="bg-white/5 border border-white/10 backdrop-blur-xl p-8 rounded-2xl shadow-lg">
 
-            <div className="flex gap-3">
-              {item.options.map((opt) => (
+        {/* QUESTION VIEW */}
+        {step < questions.length ? (
+          <>
+            <h2 className="text-xl font-semibold mb-6">
+              {questions[step].q}
+            </h2>
+
+            <div className="space-y-3">
+              {questions[step].options.map((opt) => (
                 <button
                   key={opt}
-                  onClick={() =>
-                    setAnswers({ ...answers, [i]: opt })
-                  }
-                  className={`px-4 py-2 rounded-lg border ${
-                    answers[i] === opt
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-100"
-                  }`}
+                  onClick={() => handleAnswer(opt)}
+                  className="w-full py-3 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition"
                 >
                   {opt}
                 </button>
               ))}
             </div>
+
+            <p className="text-sm text-gray-400 mt-6">
+              Question {step + 1} of {questions.length}
+            </p>
+          </>
+        ) : (
+          /* RESULT VIEW */
+          <div className="text-center">
+            <h2 className="text-xl font-bold mb-4">
+              Your Result
+            </h2>
+
+            <p className="text-gray-300 mb-6">
+              {getResult()}
+            </p>
+
+            <button
+              onClick={() => {
+                setStep(0);
+                setAnswers([]);
+              }}
+              className="px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500"
+            >
+              Retake Quiz
+            </button>
           </div>
-        ))}
+        )}
+
       </div>
     </div>
   );
