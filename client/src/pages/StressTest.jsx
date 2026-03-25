@@ -1,41 +1,63 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Home() {
+export default function StressTest() {
+  const navigate = useNavigate();
+
+  const questions = [
+    { q: "How often do you feel stressed?", options: ["Rarely", "Sometimes", "Often"] },
+    { q: "Do you feel overwhelmed?", options: ["Yes", "Sometimes", "No"] },
+    { q: "Do you have trouble sleeping?", options: ["Yes", "Sometimes", "No"] },
+    { q: "Do you feel anxious frequently?", options: ["Yes", "Sometimes", "No"] },
+    { q: "Do you feel mentally tired?", options: ["Yes", "Sometimes", "No"] },
+  ];
+
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState([]);
+
+  const handleAnswer = (opt) => {
+    const newAnswers = [...answers, opt];
+    setAnswers(newAnswers);
+
+    if (step < questions.length - 1) {
+      setStep(step + 1);
+    } else {
+      navigate("/results", { state: { answers: newAnswers } });
+    }
+  };
+
   return (
-    <div className="max-w-5xl mx-auto px-6 py-20 animate-fade-in">
+    <div className="max-w-5xl mx-auto px-6 py-12">
 
-      <div className="grid md:grid-cols-2 gap-10 items-center">
+      <div className="max-w-md mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
 
-        {/* LEFT */}
-        <div>
-          <h1 className="text-5xl font-semibold text-gray-800 mb-4 leading-tight">
-            Mental Wellness Assistant
-          </h1>
-
-          <p className="text-gray-500 mb-8">
-            Understand your stress levels and get a personalized plan to improve your mental well-being.
-          </p>
-
-          <Link
-            to="/test"
-            className="inline-block px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg shadow hover:shadow-md active:scale-95 transition"
-          >
-            Start Stress Test
-          </Link>
+        {/* Progress bar */}
+        <div className="w-full bg-gray-100 h-2 rounded mb-6">
+          <div
+            className="bg-blue-400 h-2 rounded"
+            style={{ width: `${((step + 1) / questions.length) * 100}%` }}
+          ></div>
         </div>
 
-        {/* RIGHT */}
-        <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition">
-          <h3 className="text-lg font-medium text-gray-800 mb-4">
-            What you’ll get
-          </h3>
+        <h2 className="text-lg font-medium text-gray-800 mb-4">
+          {questions[step].q}
+        </h2>
 
-          <ul className="space-y-3 text-gray-500">
-            <li>✔ Stress level analysis</li>
-            <li>✔ Personalized weekly plan</li>
-            <li>✔ Progress tracking</li>
-          </ul>
+        <div className="space-y-3">
+          {questions[step].options.map((opt) => (
+            <button
+              key={opt}
+              onClick={() => handleAnswer(opt)}
+              className="w-full py-3 rounded-lg border border-gray-200 hover:bg-blue-50 transition"
+            >
+              {opt}
+            </button>
+          ))}
         </div>
+
+        <p className="text-sm text-gray-400 mt-6">
+          Question {step + 1} of {questions.length}
+        </p>
 
       </div>
     </div>
