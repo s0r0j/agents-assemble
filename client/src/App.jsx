@@ -1,18 +1,22 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Chat from "./pages/Chat";
-import Quiz from "./pages/Quiz";
+import StressTest from "./pages/StressTest";
+import Results from "./pages/Results";
+import Schedule from "./pages/Schedule";
+import FinalCheck from "./pages/FinalCheck";
 import Navbar from "./components/Navbar";
 
 export default function App() {
   return (
-    <div className="bg-[#0f172a] min-h-screen">
+    <div className="bg-[#f8fafc] min-h-screen">
       <Navbar />
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/quiz" element={<Quiz />} />
+        <Route path="/test" element={<StressTest />} />
+        <Route path="/results" element={<Results />} />
+        <Route path="/schedule" element={<Schedule />} />
+        <Route path="/final" element={<FinalCheck />} />
       </Routes>
     </div>
   );
