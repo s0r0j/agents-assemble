@@ -21,9 +21,16 @@ export default function Results() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-12">
+    <div className="max-w-5xl mx-auto px-6 py-12 animate-fade-in">
 
-      <div className="max-w-md mx-auto bg-white p-10 rounded-xl border border-gray-200 shadow-sm text-center">
+      <div className="max-w-md mx-auto bg-white p-10 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition text-center">
+
+        {/* Emoji */}
+        <div className="text-5xl mb-4">
+          {level === "Low" && "😊"}
+          {level === "Medium" && "😐"}
+          {level === "High" && "😟"}
+        </div>
 
         <h2 className="text-2xl font-semibold text-gray-800 mb-2">
           Your Stress Analysis
@@ -54,7 +61,7 @@ export default function Results() {
           onClick={() =>
             navigate("/schedule", { state: { level } })
           }
-          className="px-6 py-3 bg-emerald-400 hover:bg-emerald-500 text-white rounded-lg"
+          className="px-6 py-3 bg-emerald-400 hover:bg-emerald-500 text-white rounded-lg shadow hover:shadow-md active:scale-95 transition"
         >
           View Your Plan
         </button>

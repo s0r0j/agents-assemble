@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
-    <div className="max-w-5xl mx-auto px-6 py-20">
+    <div className="max-w-5xl mx-auto px-6 py-20 animate-fade-in">
 
       <div className="grid md:grid-cols-2 gap-10 items-center">
 
@@ -18,14 +18,14 @@ export default function Home() {
 
           <Link
             to="/test"
-            className="inline-block px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg shadow transition"
+            className="inline-block px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg shadow hover:shadow-md active:scale-95 transition"
           >
             Start Stress Test
           </Link>
         </div>
 
         {/* RIGHT */}
-        <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
+        <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition">
           <h3 className="text-lg font-medium text-gray-800 mb-4">
             What you’ll get
           </h3>
