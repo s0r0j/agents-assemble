@@ -4,15 +4,13 @@ export default function Results() {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const answers = state?.answers || [];
-
-  const score = answers.filter(
-    (a) => a === "Often" || a === "Yes"
-  ).length;
-
-  let level = "Low";
-  if (score >= 3) level = "High";
-  else if (score >= 1) level = "Medium";
+  // get data ONLY from backend
+  const {
+    level = "Medium",
+    score = 2,
+    advice = "Based on your responses, here is your analysis.",
+    total = 5,
+  } = state || {};
 
   const levelColor = {
     Low: "text-emerald-500",
@@ -37,24 +35,25 @@ export default function Results() {
         </h2>
 
         <p className="text-gray-400 mb-6">
-          Based on your responses
+          AI-generated result based on your responses
         </p>
 
+        {/* Score */}
         <div className="mb-6">
           <p className="text-sm text-gray-400">Score</p>
           <h3 className="text-4xl font-bold text-gray-800">
-            {score} / {answers.length}
+            {score} / {total}
           </h3>
         </div>
 
+        {/* Level */}
         <h3 className={`text-2xl font-semibold mb-4 ${levelColor[level]}`}>
           {level} Stress
         </h3>
 
+        {/* Advice from AI */}
         <p className="text-gray-500 mb-8">
-          {level === "Low" && "You're doing well. Keep it up."}
-          {level === "Medium" && "Some stress detected. Improve lifestyle habits."}
-          {level === "High" && "High stress detected. Take action immediately."}
+          {advice}
         </p>
 
         <button

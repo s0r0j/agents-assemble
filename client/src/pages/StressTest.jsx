@@ -15,16 +15,72 @@ export default function StressTest() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState([]);
 
-  const handleAnswer = (opt) => {
-    const newAnswers = [...answers, opt];
-    setAnswers(newAnswers);
+  const handleAnswer = async (opt) => {
+  const newAnswers = [...answers, opt];
+  setAnswers(newAnswers);
 
-    if (step < questions.length - 1) {
-      setStep(step + 1);
-    } else {
-      navigate("/results", { state: { answers: newAnswers } });
+  if (step < questions.length - 1) {
+    setStep(step + 1);
+  } else {
+    try {
+      // convert answers → readable text
+      const userText = newAnswers
+        .map((ans, i) => `Q${i + 1}: ${ans}`)
+        .join("\n");
+
+      const res = await fetch("/api/api/workspaces/019d2042-0375-71ea-ac41-09411abbcbc0/fhir", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    method: "SendMessage",
+    params: {
+      message: {
+        role: "user",
+        parts: [
+          {
+            text: `Analyze stress level based on these answers:\n${userText}`,
+          },
+        ],
+      },
+    },
+  }),
+});
+
+      const text = await res.text();
+      console.log("RAW RESPONSE:", text);
+
+      const data = JSON.parse(text);
+
+      // extract AI reply (IMPORTANT — may vary)
+      const aiText =
+        data?.result?.message?.parts?.[0]?.text ||
+        "Could not analyze stress.";
+
+      navigate("/results", {
+        state: {
+          level: "Medium", // temp until we parse properly
+          score: newAnswers.length,
+          advice: aiText,
+          total: questions.length,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+
+      navigate("/results", {
+        state: {
+          level: "Medium",
+          score: 2,
+          advice: "AI failed. Showing default result.",
+          total: questions.length,
+        },
+      });
     }
-  };
+  }
+};
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-12">
@@ -63,3 +119,4 @@ export default function StressTest() {
     </div>
   );
 }
+
