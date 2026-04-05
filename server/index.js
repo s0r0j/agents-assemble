@@ -2,7 +2,7 @@ import cors from "cors";
 import express from "express";
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json({ limit: "2mb" }));
@@ -77,7 +77,7 @@ app.get("/.well-known/agent-card.json", (req, res) => {
     name: "MindCare Backend",
     description: "AI stress analysis agent",
 
-    url: "https://struck-freebsd-unwrap-applications.trycloudflare.com/agent",
+    url: "https://agents-assemble.onrender.com/agent",
 
     version: "1.0.0",
     protocolVersion: "0.1.0",
